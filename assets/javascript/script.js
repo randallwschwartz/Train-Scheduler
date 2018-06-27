@@ -33,42 +33,145 @@ var database = firebase.database();
 //     }
 // })
 
+// database.ref().on("child_added", function(childSnapshot) {
+      
+//     // Log everything that's coming out of snapshot
+//     console.log(childSnapshot.val().empName);
+//     console.log(childSnapshot.val().role);
+//     console.log(childSnapshot.val().startDate);
+//     console.log(childSnapshot.val().monthlyRate);
+//     console.log(childSnapshot.val().dateAdded); //
+//     console.log(moment().diff(childSnapshot.val().startDate, "months"));
+//     var monthsWorked = moment().diff(childSnapshot.val().startDate, "months");
+//     $("tbody").append("<tr><td>" + 
+//      childSnapshot.val().empName + "</td><td>" + 
+//      childSnapshot.val().role + "</td><td>" +
+//      childSnapshot.val().startDate + "</td><td>" + 
+//      monthsWorked + "</td><td>" +
+//      childSnapshot.val().monthlyRate + "</td><td>" +
+//      monthsWorked * childSnapshot.val().monthlyRate + "</td>");
+// });    
+
+// function addEmployee() {
+//     var empName = $("#employee-name").val().trim();
+//     var role = $("#role").val().trim();
+//     var startDate = $("#start-date").val();
+//     var monthlyRate = $("#monthly-rate").val().trim();
+//     database.ref().push({
+//         empName: empName,
+//         role: role,
+//         startDate: startDate,
+//         monthlyRate: monthlyRate,
+//         dateAdded: firebase.database.ServerValue.TIMESTAMP
+//     });
+// }
+// $("button").on("click", function(event) {
+//     // don't refresh the page
+//     event.preventDefault();
+    
+//     console.log("test");
+//     addEmployee();
+// });
+
 database.ref().on("child_added", function(childSnapshot) {
       
     // Log everything that's coming out of snapshot
-    console.log(childSnapshot.val().empName);
-    console.log(childSnapshot.val().role);
-    console.log(childSnapshot.val().startDate);
-    console.log(childSnapshot.val().monthlyRate);
+    console.log("trainName: ");
+    console.log(childSnapshot.val().trainName);
+    console.log("destinationName: ");
+    console.log(childSnapshot.val().destinationName);
+    console.log("firstTrainTime: ");
+    console.log(childSnapshot.val().firstTrainTime);
+    console.log("frequencyRate: ");
+    console.log(childSnapshot.val().frequencyRate);
+    console.log("dateAdded: ");
     console.log(childSnapshot.val().dateAdded); //
-    console.log(moment().diff(childSnapshot.val().startDate, "months"));
-    var monthsWorked = moment().diff(childSnapshot.val().startDate, "months");
+    console.log(moment().diff(childSnapshot.val().firstTrainTime, "minutes"));
+    // var monthsWorked = moment().diff(childSnapshot.val().startDate, "months");
+
+    // First Time (pushed back 1 year to make sure it comes before current time)
+    var firstTimeConverted = moment(childSnapshot.val().firstTrainTime, "HH:mm").subtract(1, "years");
+    console.log(firstTimeConverted);
+
+    var currentTime = moment();
+    console.log("CURRENT TIME: " + moment(currentTime).format("hh:mm"));
+
+    // Difference between the times
+    var diffTime = moment().diff(moment(firstTimeConverted), "minutes");
+    console.log("DIFFERENCE IN TIME: " + diffTime);
+
+    // Time apart (remainder)
+    var tRemainder = diffTime % childSnapshot.val().frequencyRate;
+    console.log(tRemainder);
+
+    // Minutes Until Train Arrives
+    var tMinutesTillTrain = childSnapshot.val().frequencyRate - tRemainder;
+    console.log("MINUTES TILL TRAIN: " + tMinutesTillTrain);
+
+    // Next Train Arrival Time
+    var nextTrain = moment().add(tMinutesTillTrain, "minutes");
+    console.log("ARRIVAL TIME: " + moment(nextTrain).format("hh:mm"));
+
+
+    // append the line to the html
     $("tbody").append("<tr><td>" + 
-     childSnapshot.val().empName + "</td><td>" + 
-     childSnapshot.val().role + "</td><td>" +
-     childSnapshot.val().startDate + "</td><td>" + 
-     monthsWorked + "</td><td>" +
-     childSnapshot.val().monthlyRate + "</td><td>" +
-     monthsWorked * childSnapshot.val().monthlyRate + "</td>");
+     childSnapshot.val().trainName + "</td><td>" + 
+     childSnapshot.val().destinationName + "</td><td>" +
+     childSnapshot.val().frequencyRate + "</td><td>" + 
+     moment(nextTrain).format("hh:mm") + "</td><td>" +
+     tMinutesTillTrain + "</td>");
 });    
 
-function addEmployee() {
-    var empName = $("#employee-name").val().trim();
-    var role = $("#role").val().trim();
-    var startDate = $("#start-date").val();
-    var monthlyRate = $("#monthly-rate").val().trim();
+function addTrain() {
+    var trainName = $("#train-name").val().trim();
+    var destinationName = $("#destination-name").val().trim();
+    var firstTrainTime = $("#first-train").val();
+    var frequencyRate = $("#frequency-rate").val().trim();
     database.ref().push({
-        empName: empName,
-        role: role,
-        startDate: startDate,
-        monthlyRate: monthlyRate,
+        trainName: trainName,
+        destinationName: destinationName,
+        firstTrainTime: firstTrainTime,
+        frequencyRate: frequencyRate,
         dateAdded: firebase.database.ServerValue.TIMESTAMP
     });
 }
+
 $("button").on("click", function(event) {
     // don't refresh the page
     event.preventDefault();
     
     console.log("test");
-    addEmployee();
+    addTrain();
 });
+
+// function updateTrain() {
+//     // Assumptions
+//     var tFrequency = 3;
+
+//     // Time is 3:30 AM
+//     var firstTime = "03:30";
+
+//     // First Time (pushed back 1 year to make sure it comes before current time)
+//     var firstTimeConverted = moment(firstTime, "HH:mm").subtract(1, "years");
+//     console.log(firstTimeConverted);
+
+//     // Current Time
+//     var currentTime = moment();
+//     console.log("CURRENT TIME: " + moment(currentTime).format("hh:mm"));
+
+//     // Difference between the times
+//     var diffTime = moment().diff(moment(firstTimeConverted), "minutes");
+//     console.log("DIFFERENCE IN TIME: " + diffTime);
+
+//     // Time apart (remainder)
+//     var tRemainder = diffTime % tFrequency;
+//     console.log(tRemainder);
+
+//     // Minute Until Train
+//     var tMinutesTillTrain = tFrequency - tRemainder;
+//     console.log("MINUTES TILL TRAIN: " + tMinutesTillTrain);
+
+//     // Next Train
+//     var nextTrain = moment().add(tMinutesTillTrain, "minutes");
+//     console.log("ARRIVAL TIME: " + moment(nextTrain).format("hh:mm"));
+// }
