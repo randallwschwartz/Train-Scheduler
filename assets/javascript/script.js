@@ -76,17 +76,18 @@ var database = firebase.database();
 database.ref().on("child_added", function(childSnapshot) {
       
     // Log everything that's coming out of snapshot
-    console.log("trainName: ");
-    console.log(childSnapshot.val().trainName);
-    console.log("destinationName: ");
-    console.log(childSnapshot.val().destinationName);
-    console.log("firstTrainTime: ");
-    console.log(childSnapshot.val().firstTrainTime);
-    console.log("frequencyRate: ");
-    console.log(childSnapshot.val().frequencyRate);
-    console.log("dateAdded: ");
-    console.log(childSnapshot.val().dateAdded); //
-    console.log(moment().diff(childSnapshot.val().firstTrainTime, "minutes"));
+    console.log("trainName: " + childSnapshot.val().trainName);
+    // console.log(childSnapshot.val().trainName);
+    console.log("destinationName: " + childSnapshot.val().destinationName);
+    // console.log(childSnapshot.val().destinationName);
+    console.log("firstTrainTime: " + childSnapshot.val().firstTrainTime);
+    console.log("firstTrainTime: " + moment(childSnapshot.val().firstTrainTime).format("h:mm a"));
+    // console.log("firstTrainTime: " + moment(childSnapshot.val().firstTrainTime, "H:mm a"));
+    console.log("frequencyRate: " + childSnapshot.val().frequencyRate);
+    // console.log(childSnapshot.val().frequencyRate);
+    console.log("dateAdded: " + childSnapshot.val().dateAdded);
+    // console.log(childSnapshot.val().dateAdded); //
+    // console.log(moment().diff(childSnapshot.val().firstTrainTime, "minutes"));
     // var monthsWorked = moment().diff(childSnapshot.val().startDate, "months");
 
     // First Time (pushed back 1 year to make sure it comes before current time)
@@ -94,7 +95,8 @@ database.ref().on("child_added", function(childSnapshot) {
     console.log(firstTimeConverted);
 
     var currentTime = moment();
-    console.log("CURRENT TIME: " + moment(currentTime).format("hh:mm"));
+    // console.log("CURRENT TIME: " + moment(currentTime).format("hh:mm a"));
+    console.log("CURRENT TIME: " + moment(currentTime).format("LT"));
 
     // Difference between the times
     var diffTime = moment().diff(moment(firstTimeConverted), "minutes");
@@ -102,7 +104,7 @@ database.ref().on("child_added", function(childSnapshot) {
 
     // Time apart (remainder)
     var tRemainder = diffTime % childSnapshot.val().frequencyRate;
-    console.log(tRemainder);
+    console.log("tRemainder: " + tRemainder);
 
     // Minutes Until Train Arrives
     var tMinutesTillTrain = childSnapshot.val().frequencyRate - tRemainder;
@@ -110,15 +112,16 @@ database.ref().on("child_added", function(childSnapshot) {
 
     // Next Train Arrival Time
     var nextTrain = moment().add(tMinutesTillTrain, "minutes");
-    console.log("ARRIVAL TIME: " + moment(nextTrain).format("hh:mm"));
-
+    // console.log("ARRIVAL TIME: " + moment(nextTrain).format("hh:mm"));
+    console.log("ARRIVAL TIME: " + moment(nextTrain).format("LT"));
+    console.log("--------------------------------------");
 
     // append the line to the html
     $("tbody").append("<tr><td>" + 
      childSnapshot.val().trainName + "</td><td>" + 
      childSnapshot.val().destinationName + "</td><td>" +
      childSnapshot.val().frequencyRate + "</td><td>" + 
-     moment(nextTrain).format("hh:mm") + "</td><td>" +
+     moment(nextTrain).format("LT") + "</td><td>" +
      tMinutesTillTrain + "</td>");
 });    
 
