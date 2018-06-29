@@ -23,55 +23,6 @@ firebase.initializeApp(config);
 console.log(moment().format("L"));
 var database = firebase.database();
 
-// database.ref().on("value", function(snapshot) {
-//     for(i = 0; i < snapshot.length; i++) {
-//         var empName = snapshot[i].empName;
-//         var role = snapshot[i].role;
-//         var startDate = snapshot[i].startDate;
-//         var monthlyRate = snapshot[i].monthlyRate;
-
-//     }
-// })
-
-// database.ref().on("child_added", function(childSnapshot) {
-      
-//     // Log everything that's coming out of snapshot
-//     console.log(childSnapshot.val().empName);
-//     console.log(childSnapshot.val().role);
-//     console.log(childSnapshot.val().startDate);
-//     console.log(childSnapshot.val().monthlyRate);
-//     console.log(childSnapshot.val().dateAdded); //
-//     console.log(moment().diff(childSnapshot.val().startDate, "months"));
-//     var monthsWorked = moment().diff(childSnapshot.val().startDate, "months");
-//     $("tbody").append("<tr><td>" + 
-//      childSnapshot.val().empName + "</td><td>" + 
-//      childSnapshot.val().role + "</td><td>" +
-//      childSnapshot.val().startDate + "</td><td>" + 
-//      monthsWorked + "</td><td>" +
-//      childSnapshot.val().monthlyRate + "</td><td>" +
-//      monthsWorked * childSnapshot.val().monthlyRate + "</td>");
-// });    
-
-// function addEmployee() {
-//     var empName = $("#employee-name").val().trim();
-//     var role = $("#role").val().trim();
-//     var startDate = $("#start-date").val();
-//     var monthlyRate = $("#monthly-rate").val().trim();
-//     database.ref().push({
-//         empName: empName,
-//         role: role,
-//         startDate: startDate,
-//         monthlyRate: monthlyRate,
-//         dateAdded: firebase.database.ServerValue.TIMESTAMP
-//     });
-// }
-// $("button").on("click", function(event) {
-//     // don't refresh the page
-//     event.preventDefault();
-    
-//     console.log("test");
-//     addEmployee();
-// });
 
 database.ref().on("child_added", function(childSnapshot) {
       
@@ -125,6 +76,10 @@ database.ref().on("child_added", function(childSnapshot) {
      tMinutesTillTrain + "</td>");
 });    
 
+// this function writes a table to the html when called (when a child object is added to firebase)
+
+
+// this function adds a new train from the input boxes as a new child object in firebase
 function addTrain() {
     var trainName = $("#train-name").val().trim();
     var destinationName = $("#destination-name").val().trim();
@@ -147,34 +102,3 @@ $("button").on("click", function(event) {
     addTrain();
 });
 
-// function updateTrain() {
-//     // Assumptions
-//     var tFrequency = 3;
-
-//     // Time is 3:30 AM
-//     var firstTime = "03:30";
-
-//     // First Time (pushed back 1 year to make sure it comes before current time)
-//     var firstTimeConverted = moment(firstTime, "HH:mm").subtract(1, "years");
-//     console.log(firstTimeConverted);
-
-//     // Current Time
-//     var currentTime = moment();
-//     console.log("CURRENT TIME: " + moment(currentTime).format("hh:mm"));
-
-//     // Difference between the times
-//     var diffTime = moment().diff(moment(firstTimeConverted), "minutes");
-//     console.log("DIFFERENCE IN TIME: " + diffTime);
-
-//     // Time apart (remainder)
-//     var tRemainder = diffTime % tFrequency;
-//     console.log(tRemainder);
-
-//     // Minute Until Train
-//     var tMinutesTillTrain = tFrequency - tRemainder;
-//     console.log("MINUTES TILL TRAIN: " + tMinutesTillTrain);
-
-//     // Next Train
-//     var nextTrain = moment().add(tMinutesTillTrain, "minutes");
-//     console.log("ARRIVAL TIME: " + moment(nextTrain).format("hh:mm"));
-// }

@@ -10,13 +10,23 @@
     <!-- jQuery -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 
+    <!-- Firebase Reference -->
+    <script src="https://www.gstatic.com/firebasejs/4.12.0/firebase.js"></script>
+    <script src="https://momentjs.com/downloads/moment-with-locales.js"></script>
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="assets/css/reset.css">
+
     <!-- Bootstrap CDN-->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
 
-    <!-- Firebase Reference -->
-    <script src="https://www.gstatic.com/firebasejs/4.12.0/firebase.js"></script>
-    <script src="https://momentjs.com/downloads/moment-with-locales.js"></script>
+    <link rel="stylesheet" href="assets/css/style.css">
+
+    <!-- Link to Schwartz Portfolio:
+        https://randallwschwartz.github.io/Bootstrap-Portfolio/portfolio.html
+        -->
+    
 </head>
 
 <body>
@@ -27,16 +37,16 @@
 
         <!-- Jumbotron Title -->
         <div class="jumbotron">
-            <h1 class="text-center">Anytime is Train Time</h1>
-            <h3 class="text-center">Choo Choo. Chee Chee.</h3>
+            <h1 class="text-center">Train Scheduling And Status</h1>
+            <h3 class="text-center">Check Below For Upcoming Arrival Times</h3>
         </div>
 
         <div class="row">
-            <div class="col-lg-12">
+            <div class="col-sm-12">
                 <div class="card card-default">
                     <div class="card-body">
                         <div class="row">
-                            <h3>Current Train Schedule</h3>
+                            <h3>List of Trains and Arrival Times</h3>
                         </div>
                         <div class="row">
                             <table class="table">
@@ -63,34 +73,13 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </div> <br>
         <div class="row">
-            <div class="col-lg-12">
+            <div class="col-sm-12">
                 <div class="card card-default">
                     <div class="card-heading">
-                        <h3 class="card-title">Add Train</h3>
+                        <h3 class="card-title">Add A New Train to List</h3>
                     </div>
-                    <!-- <div class="card-body">
-                        <form>
-                            <div class="form-group row">
-                                <label for="bidder-name">Train Name</label>
-                                <input class="form-control" id="employee-name" type="text" value="Jane Doe">
-                            </div>
-                            <div class="form-group row">
-                                <label for="bidder-price">Destination</label>
-                                <input class="form-control" id="role" type="text" value="CEO">
-                            </div>
-                            <div class="form-group row">
-                                <label for="bidder-price">First Train Time (HH:mm - military time)</label>
-                                <input class="form-control" id="start-date" type="text" value="01/01/2000">
-                            </div>
-                            <div class="form-group row">
-                                <label for="bidder-price">Frequency (min)</label>
-                                <input class="form-control" id="monthly-rate" type="number" value="10000">
-                            </div>
-                            <button class="btn btn-primary" id="submit-employee" type="submit">Submit</button>
-                        </form>
-                    </div> -->
                     <div class="card-body">
                         <form>
                             <div class="form-group row">
